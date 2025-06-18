@@ -1,3 +1,4 @@
+"use client";
 import { SearchBox } from "@/components/search-box";
 import {
   Card,
@@ -6,30 +7,56 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Car } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 const data = [
   {
     title: "Financial Regulations Update",
+    slug: "financial-regulations-update",
+
     description:
       "Recent changes to Georgia's financial regulations and compliance requirements",
   },
   {
     title: "Banking Law Amendments",
+    slug: "banking-law-amendments",
     description:
       "New amendments to banking laws affecting commercial operations",
   },
   {
     title: "Tax Law Changes",
+    slug: "tax-law-changes",
     description:
       "Important updates to tax legislation for financial institutions",
   },
   {
     title: "Corporate Governance",
+    slug: "corporate-governance",
     description: "New corporate governance requirements for public companies",
   },
 ];
 
 export default function Home() {
+  const [query, setQuery] = useState("");
+  const [filteredData, setFilteredData] = useState(data);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const results = data.filter((item) =>
+      item.title.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredData(results);
+    console.log("Search query:", query);
+  };
+
+  const handleChange = (value: string) => {
+    if (value.trim() === "") {
+      setFilteredData(data);
+    }
+    setQuery(value);
+  };
+
   return (
     <div className="flex flex-col items-center  justify-center min-h-[calc(100vh-200px)] px-6">
       <div className="w-full max-w-6xl mx-auto text-center space-y-8 ">
@@ -42,7 +69,12 @@ export default function Home() {
           </p>
         </div>
         <div className="w-full max-w-2xl mx-auto">
-          <SearchBox />
+          <SearchBox
+            setQuery={setQuery}
+            query={query}
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+          />
         </div>
         <div className="flex items-center justify-center gap-3">
           <button className="bg-zinc-800 hover:bg-zinc-700 text-white px-6 py-3 rounded-full flex items-center gap-2 transition-colors">
@@ -53,12 +85,14 @@ export default function Home() {
           </button>
         </div>
         <div className="flex flex-row flex-wrap justify-center gap-2">
-          {data.map((item, index) => (
+          {filteredData.map((item, index) => (
             <Card className="w-full md:w-[250px]" key={index}>
               <CardHeader>
-                <CardTitle className="text-left min-h-[32px]">
-                  {item.title}
-                </CardTitle>
+                <Link href={`/${item.slug}`} className="flex flex-col gap-2">
+                  <CardTitle className="text-left min-h-[32px]">
+                    {item.title}
+                  </CardTitle>
+                </Link>
                 <CardDescription className="text-left">
                   {item.description}
                 </CardDescription>
