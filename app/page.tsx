@@ -1,4 +1,5 @@
 "use client";
+
 import { SearchBox } from "@/components/search-box";
 import {
   Card,
@@ -8,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Car } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const data = [
@@ -40,6 +42,7 @@ const data = [
 export default function Home() {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState(data);
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +58,9 @@ export default function Home() {
       setFilteredData(data);
     }
     setQuery(value);
+  };
+  const handleResearch = () => {
+    window.open(`https://www.google.com/search?q=${query}`, "_blank");
   };
 
   return (
@@ -77,14 +83,25 @@ export default function Home() {
           />
         </div>
         <div className="flex items-center justify-center gap-3">
-          <button className="bg-zinc-800 hover:bg-zinc-700 text-white px-6 py-3 rounded-full flex items-center gap-2 transition-colors">
+          <button
+            onClick={handleSubmit}
+            className="bg-zinc-800 hover:bg-zinc-700 text-white px-6 py-3 rounded-full flex items-center gap-2 transition-colors"
+          >
             <span className="text-sm font-medium">Search</span>
           </button>
-          <button className="bg-zinc-800 hover:bg-zinc-700 text-white px-6 py-3 rounded-full flex items-center gap-2 transition-colors">
+
+          <button
+            onClick={handleResearch}
+            className="bg-zinc-800 hover:bg-zinc-700 text-white px-6 py-3 rounded-full flex items-center gap-2 transition-colors"
+          >
             <span className="text-sm font-medium">Research</span>
           </button>
         </div>
-        <div className="flex flex-row flex-wrap justify-center gap-2">
+        <div
+          className={`flex flex-row flex-wrap  gap-2 ${
+            filteredData.length > 2 ? "justify-center" : ""
+          }`}
+        >
           {filteredData.map((item, index) => (
             <Card className="w-full md:w-[250px]" key={index}>
               <CardHeader>
