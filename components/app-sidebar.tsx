@@ -1,13 +1,7 @@
 import {
-  BookAIcon,
-  BookIcon,
-  BookOpen,
-  Calendar,
   Globe2Icon,
   Home,
-  Inbox,
-  Search,
-  Settings,
+  BookOpen,
   User2Icon,
 } from "lucide-react";
 
@@ -16,7 +10,6 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -73,10 +66,10 @@ export function AppSidebar() {
       </SidebarContent>
       <div className="p-4 border-t border-b">
         <SidebarMenuButton asChild>
-          <a href="/signIn" className="flex items-center ">
+          <Link href="/signIn" className="flex items-center ">
             <User2Icon className="h-5 w-5" />
             <span>Sign In</span>
-          </a>
+          </Link>
         </SidebarMenuButton>
       </div>
     </Sidebar>

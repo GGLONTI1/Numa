@@ -1,16 +1,13 @@
 "use client";
 
 import type React from "react";
-import { useRef, useEffect } from "react";
 import { Search, Mic } from "lucide-react";
 
 export function SearchBox({
-  setQuery,
   query,
   handleSubmit,
   handleChange,
 }: {
-  setQuery: (query: string) => void;
   query: string;
   handleSubmit: (e: React.FormEvent) => void;
   handleChange: (value: string) => void;

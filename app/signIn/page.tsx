@@ -51,7 +51,7 @@ const SignInPage = () => {
         </CardContent>
         <div className="mt-8 text-center">
           <p className="text-sm ">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/signUp" className="font-medium">
               Sign up
             </Link>
