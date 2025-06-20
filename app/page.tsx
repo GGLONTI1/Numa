@@ -103,7 +103,10 @@ export default function Home() {
           }`}
         >
           {filteredData.map((item, index) => (
-            <Card className="w-full md:w-[250px]" key={index}>
+            <Card
+              className="w-full md:w-[250px] border rounded-lg transition-shadow duration-300 hover:shadow-[0_0_15px_rgba(0,0,139,0.8)]"
+              key={index}
+            >
               <CardHeader>
                 <Link href={`/${item.slug}`} className="flex flex-col gap-2">
                   <CardTitle className="text-left min-h-[32px]">

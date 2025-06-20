@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Image from "next/image";
 import Link from "next/link";
 
 const SignInPage = () => {
@@ -51,7 +52,7 @@ const SignInPage = () => {
         <div className="mt-8 text-center">
           <p className="text-sm ">
             Don't have an account?{" "}
-            <Link href="/signup" className="font-medium">
+            <Link href="/signUp" className="font-medium">
               Sign up
             </Link>
           </p>
@@ -61,6 +62,7 @@ const SignInPage = () => {
             Login
           </Button>
           <Button variant="outline" className="w-full">
+            <Image src="/google.png" alt="Google Icon" width={15} height={15} />
             Login with Google
           </Button>
         </CardFooter>
