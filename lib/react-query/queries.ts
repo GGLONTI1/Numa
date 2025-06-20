@@ -1,5 +1,5 @@
 "use client";
-import { fetchOpenAI } from "@/app/page";
+import { fetchOpenAI } from "@/lib/api";
 import { useMutation } from "@tanstack/react-query";
 
 export function useAnalyzeText() {
