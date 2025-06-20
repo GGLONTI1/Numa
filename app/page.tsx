@@ -75,20 +75,20 @@ export default function Home() {
             <span className="text-sm font-medium">Research</span>
           </button>
         </div>
-        <div>
+        <div className="flex flex-col items-center justify-center gap-2">
           {isGettingResponse && (
-            <div className="text-sm text-zinc-400">
+            <div className="text-sm text-zinc-400 flex items-center gap-2">
               <Loader2 className="w-4 h-4 animate-spin" />
               <span>Thinking...</span>
             </div>
           )}
           {error && (
-            <div className="text-sm text-red-500">
+            <div className="text-sm text-red-500 flex items-center gap-2">
               <span>Error: {error.message}</span>
             </div>
           )}
           {isSuccess && (
-            <div className="text-sm text-zinc-400">
+            <div className="text-sm text-zinc-400 flex items-center gap-2">
               <span>{answer}</span>
             </div>
           )}
