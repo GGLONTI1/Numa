@@ -1,64 +1,42 @@
 "use client";
 
 import { SearchBox } from "@/components/search-box";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Car } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useAnalyzeText } from "@/lib/react-query/queries";
+import { Loader2 } from "lucide-react";
+
 import { useState } from "react";
 
-const data = [
-  {
-    title: "Financial Regulations Update",
-    slug: "financial-regulations-update",
+export const fetchOpenAI = async (question: string) => {
+  const response = await fetch("/api/test-openai", {
+    method: "POST",
+    body: JSON.stringify({ question }),
+  });
 
-    description:
-      "Recent changes to Georgia's financial regulations and compliance requirements",
-  },
-  {
-    title: "Banking Law Amendments",
-    slug: "banking-law-amendments",
-    description:
-      "New amendments to banking laws affecting commercial operations",
-  },
-  {
-    title: "Tax Law Changes",
-    slug: "tax-law-changes",
-    description:
-      "Important updates to tax legislation for financial institutions",
-  },
-  {
-    title: "Corporate Governance",
-    slug: "corporate-governance",
-    description: "New corporate governance requirements for public companies",
-  },
-];
+  return response.json();
+};
 
 export default function Home() {
   const [query, setQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(data);
-  const router = useRouter();
+  const [answer, setAnswer] = useState("");
+  const {
+    mutateAsync: fetchOpenAI,
+    isPending: isGettingResponse,
+    error,
+    isSuccess,
+  } = useAnalyzeText();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const results = data.filter((item) =>
-      item.title.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredData(results);
     console.log("Search query:", query);
+
+    const data = await fetchOpenAI({ question: query });
+    setAnswer(data.answer);
   };
 
   const handleChange = (value: string) => {
-    if (value.trim() === "") {
-      setFilteredData(data);
-    }
     setQuery(value);
   };
+
   const handleResearch = () => {
     window.open(`https://www.google.com/search?q=${query}`, "_blank");
   };
@@ -97,28 +75,23 @@ export default function Home() {
             <span className="text-sm font-medium">Research</span>
           </button>
         </div>
-        <div
-          className={`flex flex-row flex-wrap  gap-2 ${
-            filteredData.length > 2 ? "justify-center" : ""
-          }`}
-        >
-          {filteredData.map((item, index) => (
-            <Card
-              className="w-full md:w-[250px] border rounded-lg transition-shadow duration-300 hover:shadow-[0_0_15px_rgba(0,0,139,0.8)]"
-              key={index}
-            >
-              <CardHeader>
-                <Link href={`/${item.slug}`} className="flex flex-col gap-2">
-                  <CardTitle className="text-left min-h-[32px]">
-                    {item.title}
-                  </CardTitle>
-                </Link>
-                <CardDescription className="text-left">
-                  {item.description}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
+        <div>
+          {isGettingResponse && (
+            <div className="text-sm text-zinc-400">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Thinking...</span>
+            </div>
+          )}
+          {error && (
+            <div className="text-sm text-red-500">
+              <span>Error: {error.message}</span>
+            </div>
+          )}
+          {isSuccess && (
+            <div className="text-sm text-zinc-400">
+              <span>{answer}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

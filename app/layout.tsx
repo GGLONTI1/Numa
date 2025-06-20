@@ -5,6 +5,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
+import QueryProvider from "@/lib/react-query/provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,20 +32,22 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SidebarProvider>
-            <AppSidebar />
-            <main className="w-full">
-              <SidebarTrigger />
-              {children}
-            </main>
-          </SidebarProvider>
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SidebarProvider>
+              <AppSidebar />
+              <main className="w-full">
+                <SidebarTrigger />
+                {children}
+              </main>
+            </SidebarProvider>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );
