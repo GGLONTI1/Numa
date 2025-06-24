@@ -32,7 +32,7 @@ const SignInForm = () => {
     try {
       const session = await logIn(email, password);
       console.log("Login successful:", session);
-      router.push("/");
+      router.push("/")
     } catch (err: any) {
       setError(err.message || "Login failed");
     } finally {
