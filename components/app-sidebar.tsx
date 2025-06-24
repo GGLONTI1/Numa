@@ -7,7 +7,6 @@ import {
   User2Icon,
   LogOutIcon,
 } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
