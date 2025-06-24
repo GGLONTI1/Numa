@@ -1,8 +1,11 @@
+"use client";
+
 import {
   Globe2Icon,
   Home,
   BookOpen,
   User2Icon,
+  LogOutIcon,
 } from "lucide-react";
 
 import {
@@ -16,8 +19,10 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { logOut } from "@/lib/appwrite/auth";
 
-// Menu items.
 const items = [
   {
     title: "Home",
@@ -37,6 +42,21 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      await logOut();
+      console.log("User logged out successfully");
+      router.push("/signIn");
+    } catch (error: any) {
+      console.error("Failed to log out:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Sidebar>
       <SidebarContent>
@@ -70,6 +90,16 @@ export function AppSidebar() {
             <User2Icon className="h-5 w-5" />
             <span>Sign In</span>
           </Link>
+        </SidebarMenuButton>
+      </div>
+      <div className="p-4">
+        <SidebarMenuButton
+          className="flex items-center gap-2"
+          onClick={handleLogOut}
+          disabled={loading}
+        >
+          <LogOutIcon className="h-5 w-5" />
+          <span>{loading ? "Logging Out..." : "Log Out"}</span>
         </SidebarMenuButton>
       </div>
     </Sidebar>

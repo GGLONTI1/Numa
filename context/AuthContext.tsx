@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetUser } from "@/lib/query/queries";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { AuthState } from "@/typings";
 
 export const defaultUser = {
@@ -24,7 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (userData) {
       setUser({
         userId: userData.$id,
-        fullName: userData.fullName,
+        fullName: userData.name,
         email: userData.email,
       });
     }
