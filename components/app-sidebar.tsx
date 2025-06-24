@@ -19,8 +19,9 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getCurrentUser, logOut } from "@/lib/appwrite/auth";
+import { useContext, useState } from "react";
+import { AuthContext } from "@/context/AuthContext";
+import { useSignOut } from "@/lib/query/queries";
 
 const items = [
   {
@@ -43,6 +44,10 @@ const items = [
 export function AppSidebar() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { mutateAsync: logOut, isPending } = useSignOut();
+  const { user } = useContext(AuthContext);
+
+  console.log(user);
 
   const handleLogOut = async () => {
     setLoading(true);
@@ -83,24 +88,27 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <div className="p-4 border-t border-b">
-        <SidebarMenuButton asChild>
-          <Link href="/signIn" className="flex items-center ">
-            <User2Icon className="h-5 w-5" />
-            <span>Sign In</span>
-          </Link>
-        </SidebarMenuButton>
-      </div>
-      <div className="p-4">
-        <SidebarMenuButton
-          className="flex items-center gap-2"
-          onClick={handleLogOut}
-          disabled={loading}
-        >
-          <LogOutIcon className="h-5 w-5" />
-          <span>{loading ? "Logging Out..." : "Log Out"}</span>
-        </SidebarMenuButton>
-      </div>
+      {user.userId === "" ? (
+        <div className="p-4 border-t border-b">
+          <SidebarMenuButton asChild>
+            <Link href="/signIn" className="flex items-center ">
+              <User2Icon className="h-5 w-5" />
+              <span>Sign In</span>
+            </Link>
+          </SidebarMenuButton>
+        </div>
+      ) : (
+        <div className="p-4">
+          <SidebarMenuButton
+            className="flex items-center gap-2"
+            onClick={handleLogOut}
+            disabled={loading}
+          >
+            <LogOutIcon className="h-5 w-5" />
+            <span>{loading ? "Logging Out..." : "Log Out"}</span>
+          </SidebarMenuButton>
+        </div>
+      )}
     </Sidebar>
   );
 }

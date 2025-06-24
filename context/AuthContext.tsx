@@ -10,7 +10,7 @@ export const defaultUser = {
   email: "",
 };
 
-const AuthContext = createContext<AuthState>({
+export const AuthContext = createContext<AuthState>({
   user: defaultUser,
   setUser: () => {},
   isGettingUser: true,
@@ -21,13 +21,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { data: userData, isPending: isGettingUser } = useGetUser();
 
   useEffect(() => {
-    if (userData) {
-      setUser({
-        userId: userData.$id,
-        fullName: userData.name,
-        email: userData.email,
-      });
-    }
+    setUser({
+      userId: userData?.$id || "",
+      fullName: userData?.name || "",
+      email: userData?.email || "",
+    });
   }, [userData]);
 
   return (

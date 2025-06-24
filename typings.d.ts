@@ -11,3 +11,9 @@ interface AuthState {
   setUser: React.Dispatch<React.SetStateAction<typeof defaultUser>>;
   isGettingUser: boolean;
 }
+
+interface LawDataType {
+  title: string;
+  description: string;
+  // topics: string[];
+}

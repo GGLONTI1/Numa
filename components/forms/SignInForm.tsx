@@ -11,8 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { logIn } from "@/lib/appwrite/auth";
-
+import { useSignIn } from "@/lib/query/queries";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -22,22 +21,16 @@ const SignInForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { mutateAsync: signIn, isPending: isLoading, error } = useSignIn();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setLoading(true);
 
     try {
-      const session = await logIn(email, password);
-      console.log("Login successful:", session);
-      router.push("/")
+      await signIn({ email, password });
+      router.push("/");
     } catch (err: any) {
-      setError(err.message || "Login failed");
-    } finally {
-      setLoading(false);
+      console.log(err);
     }
   };
 
@@ -82,11 +75,11 @@ const SignInForm = () => {
                   required
                 />
               </div>
-              {error && <p className="text-red-500 text-sm">{error}</p>}
+              {error && <p className="text-red-500 text-sm">{error.message}</p>}
             </div>
             <CardFooter className="flex-col gap-2 mt-4">
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Logging in..." : "Login"}
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "Logging in..." : "Login"}
               </Button>
               <Button variant="outline" className="w-full">
                 <Image

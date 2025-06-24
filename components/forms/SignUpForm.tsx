@@ -34,8 +34,6 @@ const SignUpForm = () => {
     try {
       const user = await registerUser(data.email, data.password, data.fullName);
       router.push("/");
-      console.log("User registered successfully:", user);
-      alert("Registration successful!");
     } catch (error: any) {
       console.error("Registration failed:", error.message);
       alert(`Error: ${error.message}`);

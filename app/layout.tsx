@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
 import QueryProvider from "@/lib/react-query/provider";
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,13 +40,15 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <SidebarProvider>
-              <AppSidebar />
-              <main className="w-full">
-                <SidebarTrigger />
-                {children}
-              </main>
-            </SidebarProvider>
+            <AuthProvider>
+              <SidebarProvider>
+                <AppSidebar />
+                <main className="w-full">
+                  <SidebarTrigger />
+                  {children}
+                </main>
+              </SidebarProvider>
+            </AuthProvider>
           </ThemeProvider>
         </QueryProvider>
       </body>

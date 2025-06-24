@@ -1,15 +1,6 @@
-"use client";
-
 import { userDataType } from "@/typings";
-import { Client, Account, Databases, ID } from "appwrite";
-export { ID } from "appwrite";
-
-const client = new Client();
-client
-  .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-  .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!);
-export const account = new Account(client);
-export const database = new Databases(client);
+import { account, database } from "./appwrite";
+import { ID } from "appwrite";
 
 export async function logIn(email: string, password: string) {
   try {
@@ -72,10 +63,9 @@ export async function logOut() {
 export async function getCurrentUser() {
   try {
     const user = await account.get();
-    console.log("Current user:", user);
     return user;
   } catch (error: any) {
-    console.error("Failed to fetch current user:", error.message);
+    // console.error("Failed to fetch current user:", error.message);
     return null;
   }
 }
