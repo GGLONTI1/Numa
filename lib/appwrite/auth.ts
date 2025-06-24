@@ -6,7 +6,7 @@ export { ID } from "appwrite";
 export const client = new Client()
   .setEndpoint("https://fra.cloud.appwrite.io/v1")
   .setProject("68552aed001ba922bd39");
-
+  
 export const account = new Account(client);
 export const database = new Databases(client);
 

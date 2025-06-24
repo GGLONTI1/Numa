@@ -6,15 +6,6 @@ import { Loader2 } from "lucide-react";
 
 import { useState } from "react";
 
-export const fetchOpenAI = async (question: string) => {
-  const response = await fetch("/api/test-openai", {
-    method: "POST",
-    body: JSON.stringify({ question }),
-  });
-
-  return response.json();
-};
-
 export default function Home() {
   const [query, setQuery] = useState("");
   const [answer, setAnswer] = useState("");
@@ -30,7 +21,7 @@ export default function Home() {
     console.log("Search query:", query);
 
     const data = await fetchOpenAI({ question: query });
-    setAnswer(data.answer);
+    setAnswer((data as { answer: string }).answer);
   };
 
   const handleChange = (value: string) => {
@@ -54,7 +45,6 @@ export default function Home() {
         </div>
         <div className="w-full max-w-2xl mx-auto">
           <SearchBox
-            setQuery={setQuery}
             query={query}
             handleSubmit={handleSubmit}
             handleChange={handleChange}
