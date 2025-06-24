@@ -4,10 +4,10 @@ import { userDataType } from "@/typings";
 import { Client, Account, Databases, ID } from "appwrite";
 export { ID } from "appwrite";
 
-export const client = new Client()
+const client = new Client();
+client
   .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
   .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!);
-
 export const account = new Account(client);
 export const database = new Databases(client);
 
@@ -45,15 +45,14 @@ export async function register(
 export async function saveUserToDb(userData: userDataType, userId: string) {
   const { fullName, email } = userData;
   try {
+    const databaseId = process.env.DATABASE_ID || "685a532e001a190640a0";
+    const collectionId = process.env.USER_COLLECTION || "685a533f00012359825d";
+
     const newUser = await database.createDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_USER_COLLECTION!,
+      databaseId,
+      collectionId,
       ID.unique(),
-      {
-        userId,
-        fullName,
-        email,
-      }
+      { userId, fullName, email }
     );
     return newUser;
   } catch (error) {

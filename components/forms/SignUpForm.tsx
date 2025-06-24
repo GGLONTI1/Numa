@@ -65,6 +65,7 @@ const SignUpForm = () => {
                   id="email"
                   type="email"
                   {...register("email", { required: true })}
+                  required
                 />
               </div>
               <div className="grid gap-2">

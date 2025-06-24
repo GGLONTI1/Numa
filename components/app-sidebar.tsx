@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { logOut } from "@/lib/appwrite/auth";
+import { useEffect, useState } from "react";
+import { getCurrentUser, logOut } from "@/lib/appwrite/auth";
 
 const items = [
   {
