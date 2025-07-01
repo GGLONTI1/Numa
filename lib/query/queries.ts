@@ -3,6 +3,7 @@ import { getCurrentUser, logIn, logOut } from "../appwrite/auth";
 import {
   createLaw,
   deleteLaw,
+  editLaw,
   getAllLaws,
   getLawBySlug,
 } from "../appwrite/laws";
@@ -73,5 +74,22 @@ export const useGetLawBySlug = (slug: string) => {
     queryKey: ["getLawsBySlug", slug],
     queryFn: () => getLawBySlug(slug),
     enabled: !!slug,
+  });
+};
+
+export const useEditLaw = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      id,
+      lawData,
+    }: {
+      id: string;
+      lawData: Partial<LawDataType>;
+    }) => editLaw(id, lawData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getAllLaws"] });
+      console.log("Edited successfully");
+    },
   });
 };

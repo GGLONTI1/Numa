@@ -2,7 +2,6 @@ import { ID, Query } from "appwrite";
 import { database } from "./appwrite";
 import { LawDataType } from "@/typings";
 
-
 const LAWS_COLLECTION_ID = "685acdff002a6861fa3a";
 const DATABASE_ID = "685a532e001a190640a0";
 
@@ -50,5 +49,13 @@ export async function getLawBySlug(slug: string) {
     return documents;
   } catch (error) {
     console.error("Error getting slug");
+  }
+}
+
+export async function editLaw(id: string, lawData: Partial<LawDataType>) {
+  try {
+    await database.updateDocument(DATABASE_ID, LAWS_COLLECTION_ID, id, lawData);
+  } catch (error) {
+    console.error("failed to edit law", error);
   }
 }

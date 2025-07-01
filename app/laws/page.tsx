@@ -6,20 +6,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useDeleteLaw, useGetAllLaws } from "@/lib/query/queries";
-import { Delete, DeleteIcon, LucideDelete, Trash } from "lucide-react";
+import { useDeleteLaw, useEditLaw, useGetAllLaws } from "@/lib/query/queries";
+import { Edit, Trash } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 const LawPage = () => {
   const { data: allLaws, isPending: isGettingAllLaws } = useGetAllLaws();
   const { mutateAsync: deleteLaw, isPending: isDeletingLaw } = useDeleteLaw();
+  const { mutateAsync: editLaw, isPending: isEditingLaw } = useEditLaw();
 
   async function handleDelete(id: string) {
     console.log("Clicked", id);
     await deleteLaw(id);
   }
-
+  async function handleEdit(id: string, currentTitle: string) {
+    const newTitle = window.prompt("Enter new title:", currentTitle);
+    if (newTitle && newTitle !== currentTitle) {
+      await editLaw({
+        id,
+        lawData: { newTitle },
+      });
+    }
+  }
   if (isDeletingLaw)
     return (
       <div className="w-full h-full flex items-center justify-center">
@@ -55,7 +64,11 @@ const LawPage = () => {
               <CardDescription className="text-left">
                 {item.description.slice(0, 200)} {"..."}
               </CardDescription>
-              <div className="flex justify-end ">
+              <div className="flex justify-end gap-2">
+                <Edit
+                  onClick={() => handleEdit(item.$id, item.newTitle)}
+                  className="cursor-pointer"
+                />
                 <Trash
                   onClick={() => handleDelete(item.$id)}
                   className="cursor-pointer"
