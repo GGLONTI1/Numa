@@ -13,7 +13,8 @@ interface AuthState {
 }
 
 interface LawDataType {
-  title: string;
+  newTitle: string;
   description: string;
-  // topics: string[];
+  slug: string;
+  topics: string[];
 }
